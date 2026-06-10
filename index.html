@@ -125,6 +125,14 @@
   ]
 }
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZLJT4NNZWZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZLJT4NNZWZ');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -380,6 +388,11 @@
   .q-field textarea{resize:vertical;min-height:90px}
   .q-field input:focus,.q-field select:focus,.q-field textarea:focus{outline:none;border-color:var(--copper)}
   .q-form .btn.solid{width:100%;margin-top:1.4rem;font-size:.9rem;padding:1rem}
+  .q-consent{
+    text-align:center;margin-top:1rem;color:#6e5f45;font-size:.78rem;line-height:1.5;
+  }
+  .q-consent a{color:var(--dust);border-bottom:1px solid var(--line)}
+  .q-consent a:hover{color:var(--copper)}
   .q-alt{
     text-align:center;margin-top:1.6rem;color:var(--dust);font-size:.95rem;
   }
@@ -465,7 +478,7 @@
   <div class="hero-rating">
     <span class="score">5.0</span>
     <span class="stars" aria-label="Rated 5 out of 5 stars">★★★★★</span>
-    <a href="https://www.google.com/search?q=Superstition+Detailing+Mesa+AZ+reviews" target="_blank" rel="noopener">3 Google reviews</a>
+    <a href="https://share.google/diZb8kxHhOQJ2dDNe" target="_blank" rel="noopener">3 Google reviews</a>
   </div>
   <div class="hero-cta">
     <a class="btn solid" href="#quote">Get a Free Quote</a>
@@ -528,7 +541,7 @@
     <div class="score-big">5.0</div>
     <div class="stars" aria-label="Rated 5 out of 5 stars">★★★★★</div>
     <p>Every Google review so far: five stars.</p>
-    <a class="btn" href="https://www.google.com/search?q=Superstition+Detailing+Mesa+AZ+reviews" target="_blank" rel="noopener">Read the Reviews</a>
+    <a class="btn" href="https://share.google/diZb8kxHhOQJ2dDNe" target="_blank" rel="noopener">Read the Reviews</a>
   </div>
 </section>
 
@@ -546,7 +559,7 @@
       <div class="q-reveal-in">
     <div class="q-success" id="qSuccess">★ &nbsp;Request received — we'll be in touch shortly. Thanks for choosing Superstition Detailing.</div>
 
-    <form class="q-form" id="qForm" action="https://formsubmit.co/superstitiondetailer@gmail.com" method="POST">
+    <form class="q-form" id="qForm" action="https://formsubmit.co/contact@superstitiondetailing.com" method="POST">
       <input type="hidden" name="_subject" value="New quote request — superstitiondetailing.com">
       <input type="hidden" name="_next" value="https://superstitiondetailing.com/?sent=1#quote">
       <input type="hidden" name="_template" value="table">
@@ -595,6 +608,7 @@
         </div>
       </div>
       <button class="btn solid" type="submit">Request My Quote</button>
+      <p class="q-consent">By submitting this form, requesting a quote, or calling us, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a> and confirm you are 18 years of age or older.</p>
       <p class="q-alt">Prefer to skip the form? <a href="sms:+14805694666?&body=Hi%2C%20I%27d%20like%20a%20quote%20for%20detailing%20my%20vehicle.">Text us</a> or call <a href="tel:+14805694666">(480) 569-4666</a>.</p>
     </form>
       </div>
@@ -650,9 +664,11 @@
   <div class="ft-links">
     <a href="tel:+14805694666">(480) 569-4666</a>
     <a href="https://www.instagram.com/superstitiondetailing_" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.google.com/search?q=Superstition+Detailing+Mesa+AZ+reviews" target="_blank" rel="noopener">Google Reviews</a>
+    <a href="https://share.google/diZb8kxHhOQJ2dDNe" target="_blank" rel="noopener">Google Reviews</a>
   </div>
   <p class="fine">© 2026 Superstition Detailing · Mobile Auto Detailing · Mesa, Arizona</p>
+  <p class="fine" style="margin-top:.6rem"><a href="terms.html" style="color:#6e5f45">Terms of Service</a> · <a href="privacy.html" style="color:#6e5f45">Privacy Policy</a></p>
+  <p class="fine" style="margin-top:.6rem;max-width:640px;margin-inline:auto">By accessing this website, submitting a form, requesting a quote, or contacting Superstition Detailing by phone or text, you agree to our Terms of Service and Privacy Policy and confirm that you are at least 18 years of age.</p>
 </footer>
 
 <script>
@@ -694,7 +710,7 @@
       btn.disabled = true;
       btn.textContent = 'Sending…';
       var data = new FormData(form);
-      fetch('https://formsubmit.co/ajax/superstitiondetailer@gmail.com', {
+      fetch('https://formsubmit.co/ajax/contact@superstitiondetailing.com', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: data

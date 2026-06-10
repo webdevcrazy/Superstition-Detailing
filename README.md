@@ -45,3 +45,16 @@ To finish the hookup:
 2. **Get more Google reviews** — ask every happy customer. Volume + recency matter more than anything on the page.
 3. Submit the site to **Google Search Console** and **Bing Webmaster Tools** (Bing powers ChatGPT's search).
 4. Keep name/phone identical everywhere (Google, Instagram, site) — consistency builds trust with both search engines and AI.
+
+## Quote form (FormSubmit)
+
+The "Get a Free Quote" form sends submissions to **contact@superstitiondetailing.com**
+via FormSubmit (free, no account needed).
+
+**One-time activation:** the first time someone submits the form, FormSubmit emails
+contact@superstitiondetailing.com a confirmation link — click **Activate** in that email
+and all future submissions land straight in the inbox. Do a test submission yourself
+right after deploying to trigger it.
+
+The form now uses the custom-domain address above (both the form `action` and the
+AJAX endpoint in the script at the bottom of `index.html`).
