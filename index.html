@@ -718,6 +718,14 @@
         if (!r.ok) throw new Error('send failed');
         return r.json();
       }).then(function () {
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            event_category: 'quote_form',
+            vehicle: data.get('vehicle') || '',
+            service: data.get('service') || '',
+            city: data.get('city') || ''
+          });
+        }
         success.classList.add('show');
         form.reset();
         btn.disabled = false;
@@ -739,6 +747,18 @@
       history.replaceState(null, '', location.pathname + '#quote');
     }
     if (location.hash === '#quote') openQuote(false);
+
+    // track call and text taps
+    document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (typeof gtag === 'function') gtag('event', 'click_to_call', { event_category: 'contact' });
+      });
+    });
+    document.querySelectorAll('a[href^="sms:"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (typeof gtag === 'function') gtag('event', 'click_to_text', { event_category: 'contact' });
+      });
+    });
   })();
 </script>
 </body>
