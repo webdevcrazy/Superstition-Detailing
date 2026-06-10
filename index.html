@@ -348,6 +348,72 @@
   .faq details[open] summary::after{transform:rotate(45deg)}
   .faq details p{padding:0 1.4rem 1.3rem;color:var(--dust);font-size:.97rem}
 
+  /* quote */
+  .quote{background:var(--ink)}
+  .quote .wrap{max-width:860px}
+  .quote .head{text-align:center;margin-bottom:2.6rem}
+  .quote h2{font-size:clamp(1.7rem,3.6vw,2.4rem);margin-top:1.1rem}
+  .quote .head p{color:var(--dust);margin-top:.7rem}
+  .q-form{
+    border:1px solid var(--line);
+    background:var(--panel);
+    padding:2.4rem 2.2rem;
+  }
+  .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+  .q-field{display:flex;flex-direction:column;gap:.4rem}
+  .q-field.full{grid-column:1/-1}
+  .q-field label{
+    font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--copper);font-weight:500;
+  }
+  .q-field input,.q-field select,.q-field textarea{
+    background:var(--ink);
+    border:1px solid var(--line);
+    color:var(--bone);
+    font-family:'Jost',sans-serif;font-weight:300;font-size:1rem;
+    padding:.75rem .9rem;
+    border-radius:0;
+    transition:border-color .2s;
+    width:100%;
+  }
+  .q-field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23e09a35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center}
+  .q-field textarea{resize:vertical;min-height:90px}
+  .q-field input:focus,.q-field select:focus,.q-field textarea:focus{outline:none;border-color:var(--copper)}
+  .q-form .btn.solid{width:100%;margin-top:1.4rem;font-size:.9rem;padding:1rem}
+  .q-alt{
+    text-align:center;margin-top:1.6rem;color:var(--dust);font-size:.95rem;
+  }
+  .q-alt a{border-bottom:1px solid var(--line);transition:border-color .2s}
+  .q-alt a:hover{border-color:var(--copper)}
+  .q-trigger{
+    display:block;margin:0 auto;
+    font-size:.95rem;padding:1.05rem 2.6rem;
+    cursor:pointer;
+    transition:background .2s,color .2s,box-shadow .25s,opacity .35s,transform .35s;
+  }
+  .quote.open .q-trigger{opacity:0;transform:scale(.92);pointer-events:none;position:absolute;left:-9999px}
+  .q-reveal{
+    display:grid;grid-template-rows:0fr;
+    transition:grid-template-rows .65s cubic-bezier(.33,1,.36,1);
+  }
+  .q-reveal > .q-reveal-in{
+    overflow:hidden;
+    opacity:0;transform:translateY(14px);
+    transition:opacity .5s ease .18s,transform .55s cubic-bezier(.33,1,.36,1) .18s;
+  }
+  .quote.open .q-reveal{grid-template-rows:1fr}
+  .quote.open .q-reveal > .q-reveal-in{opacity:1;transform:none}
+  .q-success{
+    display:none;
+    border:1px solid var(--copper);
+    background:rgba(224,154,53,.08);
+    color:var(--bone);
+    padding:1rem 1.4rem;margin-bottom:1.4rem;
+    text-align:center;font-size:.97rem;
+  }
+  .q-success.show{display:block}
+  @media (max-width:640px){.q-grid{grid-template-columns:1fr}.q-form{padding:1.8rem 1.3rem}}
+
   /* footer */
   footer{
     border-top:1px solid var(--line);
@@ -383,6 +449,7 @@
     <div class="nav-links">
       <a class="plain" href="#services">Services</a>
       <a class="plain" href="#reviews">Reviews</a>
+      <a class="plain" href="#quote">Free Quote</a>
       <a class="plain" href="#contact">Service Area</a>
       <a class="btn" href="tel:+14805694666">(480) 569-4666</a>
     </div>
@@ -401,8 +468,8 @@
     <a href="https://www.google.com/search?q=Superstition+Detailing+Mesa+AZ+reviews" target="_blank" rel="noopener">3 Google reviews</a>
   </div>
   <div class="hero-cta">
-    <a class="btn solid" href="tel:+14805694666">Call to Book</a>
-    <a class="btn" href="https://www.instagram.com/superstitiondetailing_" target="_blank" rel="noopener">See Our Work</a>
+    <a class="btn solid" href="#quote">Get a Free Quote</a>
+    <a class="btn" href="tel:+14805694666">Call (480) 569-4666</a>
   </div>
 
   <!-- signature ridge: the Superstition silhouette -->
@@ -465,6 +532,76 @@
   </div>
 </section>
 
+<section class="quote" id="quote">
+  <div class="wrap">
+    <div class="head">
+      <div class="bands center" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h2 class="display">Get a free quote</h2>
+      <p>Tell us about your vehicle — we'll get back to you with a price. No obligation.</p>
+    </div>
+
+    <button class="btn solid q-trigger" id="qTrigger" type="button" aria-expanded="false" aria-controls="qReveal">Get a Free Quote</button>
+
+    <div class="q-reveal" id="qReveal">
+      <div class="q-reveal-in">
+    <div class="q-success" id="qSuccess">★ &nbsp;Request received — we'll be in touch shortly. Thanks for choosing Superstition Detailing.</div>
+
+    <form class="q-form" id="qForm" action="https://formsubmit.co/superstitiondetailer@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="New quote request — superstitiondetailing.com">
+      <input type="hidden" name="_next" value="https://superstitiondetailing.com/?sent=1#quote">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="q-grid">
+        <div class="q-field">
+          <label for="qName">Name</label>
+          <input id="qName" type="text" name="name" required autocomplete="name">
+        </div>
+        <div class="q-field">
+          <label for="qPhone">Phone</label>
+          <input id="qPhone" type="tel" name="phone" required autocomplete="tel">
+        </div>
+        <div class="q-field">
+          <label for="qVehicle">Vehicle</label>
+          <select id="qVehicle" name="vehicle" required>
+            <option value="" selected disabled>Select…</option>
+            <option>Car / Sedan</option>
+            <option>Truck</option>
+            <option>SUV</option>
+            <option>Van</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="q-field">
+          <label for="qService">Service</label>
+          <select id="qService" name="service" required>
+            <option value="" selected disabled>Select…</option>
+            <option>Full Detail (Trunk-to-Front)</option>
+            <option>Interior Only</option>
+            <option>Exterior Only</option>
+            <option>Not sure — recommend something</option>
+          </select>
+        </div>
+        <div class="q-field">
+          <label for="qCity">City</label>
+          <input id="qCity" type="text" name="city" placeholder="Mesa, Gilbert, Tempe…" required>
+        </div>
+        <div class="q-field">
+          <label for="qEmail">Email <span style="color:var(--dust);text-transform:none;letter-spacing:0">(optional)</span></label>
+          <input id="qEmail" type="email" name="email" autocomplete="email">
+        </div>
+        <div class="q-field full">
+          <label for="qMsg">Anything else?</label>
+          <textarea id="qMsg" name="message" placeholder="Pet hair, water spots, preferred days…"></textarea>
+        </div>
+      </div>
+      <button class="btn solid" type="submit">Request My Quote</button>
+      <p class="q-alt">Prefer to skip the form? <a href="sms:+14805694666?&body=Hi%2C%20I%27d%20like%20a%20quote%20for%20detailing%20my%20vehicle.">Text us</a> or call <a href="tel:+14805694666">(480) 569-4666</a>.</p>
+    </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="area" id="contact">
   <div class="wrap">
     <div>
@@ -475,7 +612,7 @@
     <div class="phone-card">
       <span class="eyebrow">Book by phone</span>
       <a class="phone-big" href="tel:+14805694666">(480) 569-4666</a>
-      <small>Or send a DM on <a href="https://www.instagram.com/superstitiondetailing_" target="_blank" rel="noopener">Instagram</a></small>
+      <small><a href="sms:+14805694666?&body=Hi%2C%20I%27d%20like%20a%20quote%20for%20detailing%20my%20vehicle.">Text us</a>, <a href="#quote">request a quote online</a>, or DM on <a href="https://www.instagram.com/superstitiondetailing_" target="_blank" rel="noopener">Instagram</a></small>
     </div>
   </div>
 </section>
@@ -518,5 +655,75 @@
   <p class="fine">© 2026 Superstition Detailing · Mobile Auto Detailing · Mesa, Arizona</p>
 </footer>
 
+<script>
+  (function () {
+    var section = document.getElementById('quote');
+    var trigger = document.getElementById('qTrigger');
+    var form = document.getElementById('qForm');
+    var success = document.getElementById('qSuccess');
+
+    function openQuote(scroll) {
+      if (!section.classList.contains('open')) {
+        section.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+      if (scroll) {
+        setTimeout(function () {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
+    }
+
+    trigger.addEventListener('click', function () {
+      openQuote(false);
+      setTimeout(function () { document.getElementById('qName').focus(); }, 650);
+    });
+
+    // every "Free Quote" link opens the form with the animation instead of a plain jump
+    document.querySelectorAll('a[href="#quote"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        openQuote(true);
+      });
+    });
+
+    // submit inline (AJAX) so there is no redirect to another page
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      var data = new FormData(form);
+      fetch('https://formsubmit.co/ajax/superstitiondetailer@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+      }).then(function (r) {
+        if (!r.ok) throw new Error('send failed');
+        return r.json();
+      }).then(function () {
+        success.classList.add('show');
+        form.reset();
+        btn.disabled = false;
+        btn.textContent = 'Request My Quote';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }).catch(function () {
+        // fallback: do a normal submit (FormSubmit redirect) if AJAX is blocked
+        btn.disabled = false;
+        btn.textContent = 'Request My Quote';
+        form.removeEventListener('submit', arguments.callee);
+        form.submit();
+      });
+    });
+
+    // returning from a non-AJAX submit or a direct #quote link: open and show state
+    if (new URLSearchParams(location.search).has('sent')) {
+      openQuote(false);
+      success.classList.add('show');
+      history.replaceState(null, '', location.pathname + '#quote');
+    }
+    if (location.hash === '#quote') openQuote(false);
+  })();
+</script>
 </body>
 </html>
