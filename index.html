@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Superstition Detailing | Mobile Car Detailing in Mesa, AZ — 5.0★ Rated</title>
-<meta name="description" content="Superstition Detailing is a 5.0-star rated mobile car detailing service in Mesa, Arizona. Trunk-to-front interior & exterior detailing for cars, trucks & SUVs at your home or office. Eco-friendly, water-efficient methods. Call (480) 569-4666 to book.">
+<meta name="description" content="5.0-star mobile car detailing in Mesa, AZ — packages from $89. Trunk-to-front interior & exterior detailing for cars, trucks & SUVs at your home or office. Water-efficient, and the water cost is on us. Call (480) 569-4666.">
 <meta name="keywords" content="mobile car detailing Mesa AZ, auto detailing Mesa Arizona, mobile detailing near me, car detailing East Valley, interior detailing Mesa, exterior detailing Mesa, truck detailing, SUV detailing, eco-friendly car detailing">
 <link rel="canonical" href="https://superstitiondetailing.com/">
+<meta name="theme-color" content="#0a0805">
+<meta property="og:url" content="https://superstitiondetailing.com/">
+<link rel="preload" as="image" href="assets/logo-badge.webp" type="image/webp" fetchpriority="high">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="geo.region" content="US-AZ">
 <meta name="geo.placename" content="Mesa, Arizona">
@@ -18,6 +21,8 @@
 <meta property="og:title" content="Superstition Detailing | Mobile Car Detailing in Mesa, AZ — 5.0★ Rated">
 <meta property="og:description" content="5.0-star mobile car detailing that comes to your driveway in Mesa & the East Valley. Trunk-to-front service, eco-friendly methods. Call (480) 569-4666.">
 <meta property="og:image" content="https://superstitiondetailing.com/assets/logo-badge.png">
+<meta property="og:image:width" content="874">
+<meta property="og:image:height" content="749">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Superstition Detailing | Mobile Car Detailing in Mesa, AZ">
@@ -131,6 +136,11 @@
       "@type": "Question",
       "name": "Is the detailing process safe for my driveway?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. We offer eco-friendly, water-efficient detailing methods designed to deliver superior results while staying safe for your driveway and easy on the Arizona desert." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does mobile detailing cost?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Packages start at $89 for The Maintenance Wash, $150 for The Interior Detail, $250 for The Essential Refresh, and $450 for The Showroom Restoration & Sanitize. Starting prices are for standard sedans; trucks, SUVs, and heavily soiled vehicles are quoted higher, and the final price is confirmed before work begins." }
     },
     {
       "@type": "Question",
@@ -511,7 +521,27 @@
     .promise .wrap,.area .wrap{grid-template-columns:1fr;gap:2.5rem}
     .nav-links a.plain{display:none}
     section{padding:4rem 1.25rem}
+    .nav-in{padding:.55rem 1rem}
+    .nav-logo img{height:28px}
+    .nav-links .btn{font-size:.74rem;padding:.6rem 1.1rem}
+    header.hero{padding-top:3rem}
+    .hero-sub{font-size:1.05rem}
   }
+  /* mobile sticky action bar */
+  .mob-bar{display:none}
+  @media (max-width:640px){
+    .mob-bar{
+      display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
+      background:rgba(10,8,5,.96);backdrop-filter:blur(10px);
+      border-top:1px solid var(--line);
+      padding:.55rem .8rem calc(.55rem + env(safe-area-inset-bottom));
+      gap:.6rem;
+    }
+    .mob-bar a{flex:1;text-align:center;font-size:.78rem;padding:.75rem 0}
+    body{padding-bottom:64px}
+    footer{padding-bottom:5.5rem}
+  }
+  @media print{.mob-bar{display:none}}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     html{scroll-behavior:auto}
@@ -523,7 +553,7 @@
 <nav>
   <div class="nav-in">
     <a class="nav-logo" href="#top" aria-label="Superstition Detailing — home">
-      <img src="assets/logo-text.png" alt="Superstition Detailing">
+      <picture><source srcset="assets/logo-text.webp" type="image/webp"><img src="assets/logo-text.png" alt="Superstition Detailing" width="932" height="272"></picture>
     </a>
     <div class="nav-links">
       <a class="plain" href="#services">Services</a>
@@ -538,7 +568,7 @@
 
 <header class="hero" id="top">
   <div class="hero-glow" aria-hidden="true"></div>
-  <img class="hero-badge" src="assets/logo-badge.png" alt="Superstition Detailing — sunset over the Superstition Mountains above a polished car silhouette">
+  <picture><source srcset="assets/logo-badge.webp" type="image/webp"><img class="hero-badge" src="assets/logo-badge.png" alt="Superstition Detailing — sunset over the Superstition Mountains above a polished car silhouette" width="874" height="749" fetchpriority="high"></picture>
   <h1>Superstition Detailing — Mobile Auto Detailing in Mesa, Arizona</h1>
   <span class="eyebrow">Mobile Auto Detailing · Mesa, Arizona</span>
   <p class="hero-sub">High-precision detailing that comes to your driveway — trunk to front, every inch, no corners cut.</p>
@@ -790,6 +820,10 @@
       <p>Yes. We offer eco-friendly, water-efficient methods designed to deliver superior results while staying safe for your driveway and easy on the Arizona desert.</p>
     </details>
     <details>
+      <summary>How much does mobile detailing cost?</summary>
+      <p>Packages start at $89 for The Maintenance Wash, $150 for The Interior Detail, $250 for The Essential Refresh, and $450 for The Showroom Restoration &amp; Sanitize. Starting prices are for standard sedans — trucks, SUVs, and heavily soiled vehicles are quoted a little higher, and your final price is confirmed before any work begins.</p>
+    </details>
+    <details>
       <summary>Do you use my water?</summary>
       <p>We hook up to a spigot at your location, but whatever water we use is on us — you'll see a credit right on your invoice covering the cost. Between that and our water-efficient methods, your water bill won't even notice we stopped by.</p>
     </details>
@@ -805,7 +839,7 @@
 </section>
 
 <footer>
-  <img class="ft-logo" src="assets/logo-text.png" alt="Superstition Detailing">
+  <picture><source srcset="assets/logo-text.webp" type="image/webp"><img class="ft-logo" src="assets/logo-text.png" alt="Superstition Detailing" width="932" height="272" loading="lazy"></picture>
   <div class="ft-links">
     <a href="tel:+14805694666">(480) 569-4666</a>
     <a href="https://www.instagram.com/superstitiondetailing_" target="_blank" rel="noopener">Instagram</a>
@@ -815,6 +849,11 @@
   <p class="fine" style="margin-top:.6rem"><a href="terms.html" style="color:#6e5f45">Terms of Service</a> · <a href="privacy.html" style="color:#6e5f45">Privacy Policy</a></p>
   <p class="fine" style="margin-top:.6rem;max-width:640px;margin-inline:auto">By accessing this website, submitting a form, requesting a quote, or contacting Superstition Detailing by phone or text, you agree to our Terms of Service and Privacy Policy and confirm that you are at least 18 years of age.</p>
 </footer>
+
+<div class="mob-bar" aria-label="Quick actions">
+  <a class="btn solid" href="#quote">Free Quote</a>
+  <a class="btn" href="tel:+14805694666">Call Now</a>
+</div>
 
 <script>
   (function () {
