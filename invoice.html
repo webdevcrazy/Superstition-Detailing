@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice | Superstition Detailing</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo-badge.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="invoice-config.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;background:#2a2a2a;min-height:100vh}
+  .cz{font-family:'Cinzel',serif}
+  .bar{position:sticky;top:0;background:#111;color:#ccc;padding:.6rem 1rem;display:flex;gap:.8rem;align-items:center;justify-content:center;z-index:9}
+  .bar button{background:#e09a35;border:none;color:#111;font-family:'Jost';font-weight:600;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;padding:.55rem 1.4rem;cursor:pointer}
+  .bar span{font-size:.8rem;color:#888}
+  @media print{.bar{display:none}body{background:#fff}}
+  .sheet{width:8.5in;min-height:11in;margin:1.5rem auto;padding:.7in;background:#fff;color:#1a1a1a;position:relative}
+  @media(max-width:900px){.sheet{width:100%;min-height:0;padding:1.2rem}}
+  @page{size:letter;margin:0}
+  @media print{.sheet{margin:0;width:100%;min-height:0}}
+  table{width:100%;border-collapse:collapse}
+  .items th{text-align:left;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem .4rem;font-weight:600}
+  .items td{padding:.55rem .4rem;font-size:.95rem}
+  .items .r{text-align:right}
+  .tot{margin-top:1rem;margin-left:auto;width:280px}
+  .tot td{padding:.25rem .4rem;font-size:.95rem}
+  .tot .r{text-align:right}
+  .tot .grand td{font-weight:700;font-size:1.2rem;padding-top:.6rem}
+  .pay{margin-top:2rem;font-size:.92rem}
+  .notes{margin-top:1.6rem;font-size:.9rem}
+  .foot{margin-top:2.4rem;font-size:.78rem}
+  .badge-paid{display:inline-block;border:2px solid;padding:.2rem .8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;transform:rotate(-4deg)}
+  .meta{font-size:.9rem}
+  .hidden{display:none}
+  #msg{color:#ddd;text-align:center;padding:4rem 1rem;font-size:1rem}
+
+  /* ============ TEMPLATE: COLOR (brand) ============ */
+  .t-color .sheet{background:#0d0a06;color:#efe3cc}
+  .t-color .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #e09a35;padding-bottom:1rem;margin-bottom:1.4rem}
+  .t-color .hdr img{width:2.9in;mix-blend-mode:screen}
+  .t-color .inv-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.7rem;color:#e09a35;text-align:right}
+  .t-color .meta{color:#a08a64}
+  .t-color h3{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:#e09a35;font-weight:600;margin-bottom:.3rem}
+  .t-color .items th{color:#e09a35;border-bottom:1px solid #2c2414}
+  .t-color .items td{border-bottom:1px solid #221b0f}
+  .t-color .credit td{color:#a08a64;font-style:italic}
+  .t-color .tot .grand td{color:#f5c168;border-top:1px solid #e09a35}
+  .t-color .pay{border:1px solid #2c2414;background:#141008;padding:1rem 1.2rem}
+  .t-color .foot{color:#6e5f45;border-top:1px solid #2c2414;padding-top:1rem}
+  .t-color .badge-paid{color:#8fbf7f;border-color:#8fbf7f}
+  .t-color a{color:#e09a35;text-decoration:none}
+
+  /* ============ TEMPLATE: BLACK & WHITE ============ */
+  .t-bw .sheet{background:#fff;color:#000}
+  .t-bw .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #000;padding-bottom:1rem;margin-bottom:1.4rem}
+  .t-bw .bizname{font-family:'Cinzel',serif;font-weight:700;font-size:1.6rem}
+  .t-bw .inv-title{font-family:'Cinzel',serif;font-weight:700;font-size:1.7rem;text-align:right}
+  .t-bw .meta{color:#333}
+  .t-bw h3{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;margin-bottom:.3rem}
+  .t-bw .items th{border-bottom:2px solid #000}
+  .t-bw .items td{border-bottom:1px solid #ccc}
+  .t-bw .credit td{color:#444;font-style:italic}
+  .t-bw .tot .grand td{border-top:2px solid #000}
+  .t-bw .pay{border:1px solid #000;padding:1rem 1.2rem}
+  .t-bw .foot{color:#555;border-top:1px solid #999;padding-top:1rem}
+  .t-bw .badge-paid{color:#000;border-color:#000}
+  .t-bw a{color:#000}
+
+  /* ============ TEMPLATE: MINIMALIST ============ */
+  .t-minimal .sheet{background:#fff;color:#222}
+  .t-minimal .hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2rem}
+  .t-minimal .bizname{font-weight:600;font-size:1.05rem;letter-spacing:.04em}
+  .t-minimal .inv-title{font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:#999;text-align:right}
+  .t-minimal .meta{color:#777}
+  .t-minimal h3{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:#999;font-weight:500;margin-bottom:.3rem}
+  .t-minimal .items th{color:#999;border-bottom:1px solid #e5e5e5;font-weight:500}
+  .t-minimal .items td{border-bottom:1px solid #f0f0f0}
+  .t-minimal .credit td{color:#888;font-style:italic}
+  .t-minimal .tot .grand td{border-top:1px solid #222}
+  .t-minimal .pay{background:#fafafa;padding:1rem 1.2rem}
+  .t-minimal .foot{color:#aaa}
+  .t-minimal .badge-paid{color:#2e7d32;border-color:#2e7d32}
+  .t-minimal a{color:#222}
+</style>
+</head>
+<body>
+<div class="bar"><button onclick="window.print()">Print / Save as PDF</button><span id="barInfo"></span></div>
+<div id="msg">Loading invoice&hellip;</div>
+<div class="sheet hidden" id="sheet">
+  <div class="hdr">
+    <div>
+      <img id="logo" src="assets/logo-text.png" alt="" class="hidden">
+      <div class="bizname hidden" id="bizname"></div>
+      <div class="meta" id="bizmeta"></div>
+    </div>
+    <div>
+      <div class="inv-title">INVOICE</div>
+      <div class="meta" style="text-align:right">
+        #<span id="num"></span><br><span id="date"></span><br>
+        <span id="paidBadge" class="badge-paid hidden" style="margin-top:.4rem">Paid</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;gap:2rem;margin-bottom:1.6rem">
+    <div><h3>Billed to</h3><div class="meta" id="custBlock"></div></div>
+    <div style="text-align:right"><h3>From</h3><div class="meta" id="fromBlock"></div></div>
+  </div>
+
+  <table class="items">
+    <thead><tr><th>Description</th><th class="r" style="width:60px">Qty</th><th class="r" style="width:90px">Price</th><th class="r" style="width:100px">Amount</th></tr></thead>
+    <tbody id="lines"></tbody>
+  </table>
+
+  <table class="tot">
+    <tr><td>Subtotal</td><td class="r" id="sub"></td></tr>
+    <tr id="discRow"><td>Discount</td><td class="r" id="disc"></td></tr>
+    <tr id="wcRow" class="credit"><td>Water credit &mdash; whatever water we used, it's on us</td><td class="r" id="wc"></td></tr>
+    <tr class="grand"><td>Total due</td><td class="r" id="grand"></td></tr>
+  </table>
+
+  <div class="pay" id="payBlock"></div>
+  <div class="notes" id="notesBlock"></div>
+
+  <div class="foot">
+    Superstition Detailing &middot; Mobile Auto Detailing &middot; Mesa, Arizona &middot; (480) 569-4666 &middot; superstitiondetailing.com<br>
+    Questions about this invoice? Call or text us anytime. Subject to our <a href="terms.html">Terms of Service</a>.
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'$'+(Math.round(n*100)/100).toFixed(2);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+load();
+async function load(){
+  const c=window.SD_CONFIG||{};
+  const id=new URLSearchParams(location.search).get('id');
+  if(!id){$('msg').textContent='No invoice specified.';return}
+  if(!c.SUPABASE_URL||c.SUPABASE_URL.includes('PASTE')){$('msg').textContent='Invoice system not configured yet.';return}
+  const sb=window.supabase.createClient(c.SUPABASE_URL,c.SUPABASE_ANON_KEY);
+  const {data:v,error}=await sb.from('invoices').select('*').eq('id',id).maybeSingle();
+  if(error||!v){$('msg').textContent='Invoice #'+esc(id)+' not found.';return}
+
+  document.body.classList.add('t-'+(v.template||'color'));
+  if((v.template||'color')==='color'){$('logo').classList.remove('hidden')}
+  else{$('bizname').classList.remove('hidden');$('bizname').textContent=v.biller?.display_name||'Superstition Detailing'}
+
+  $('num').textContent=v.id;
+  $('date').textContent=v.issued_date||'';
+  if(v.status==='paid')$('paidBadge').classList.remove('hidden');
+  $('barInfo').textContent='Invoice #'+v.id+(v.status==='paid'?' \u2014 PAID':'');
+
+  const cu=v.customer||{};
+  $('custBlock').innerHTML=[cu.name,cu.phone,cu.email,cu.address].filter(Boolean).map(esc).join('<br>');
+  $('fromBlock').innerHTML=[v.biller?.display_name,'Mesa, Arizona','(480) 569-4666'].filter(Boolean).map(esc).join('<br>');
+
+  let sub=0;
+  $('lines').innerHTML=(v.items||[]).map(i=>{const t=i.qty*i.price;sub+=t;
+    return `<tr><td>${esc(i.desc)}</td><td class="r">${i.qty}</td><td class="r">${money(i.price)}</td><td class="r">${money(t)}</td></tr>`}).join('');
+  $('sub').textContent=money(sub);
+  const disc=v.discount||0, wc=v.water_credit||0;
+  disc>0?$('disc').textContent='\u2013'+money(disc):$('discRow').remove();
+  wc>0?$('wc').textContent='\u2013'+money(wc):$('wcRow').remove();
+  $('grand').textContent=money(Math.max(0,sub-disc-wc));
+
+  const m=v.payment_methods||[]; const parts=[];
+  if(m.includes('cash'))parts.push('<strong>Cash</strong> accepted at time of service');
+  if(m.includes('check'))parts.push('<strong>Check</strong> payable to: '+esc(v.biller?.check_payee||v.biller?.display_name||''));
+  if(m.includes('zelle'))parts.push('<strong>Zelle</strong>: send to '+esc(v.biller?.zelle||''));
+  $('payBlock').innerHTML=parts.length?'<h3>Payment</h3>'+parts.join('<br>'):'';
+  $('notesBlock').innerHTML=v.notes?'<h3>Notes</h3>'+esc(v.notes):'';
+
+  $('msg').classList.add('hidden');
+  $('sheet').classList.remove('hidden');
+  if(new URLSearchParams(location.search).get('print')==='1')setTimeout(()=>window.print(),600);
+}
+</script>
+</body>
+</html>

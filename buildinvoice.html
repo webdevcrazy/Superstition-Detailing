@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Builder | Superstition Detailing</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo-badge.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="invoice-config.js"></script>
+<style>
+  :root{--ink:#0a0805;--ink2:#13100a;--panel:#181309;--line:#2c2414;--copper:#e09a35;--copper-hi:#f5c168;--ember:#b05e1e;--bone:#efe3cc;--dust:#a08a64;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--bone);font-family:'Jost',sans-serif;font-weight:300;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:var(--copper);text-decoration:none}
+  .cz{font-family:'Cinzel',serif}
+  header{border-bottom:1px solid var(--line);background:var(--ink2)}
+  .head-in{max-width:1100px;margin:0 auto;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .head-in img{height:30px;mix-blend-mode:screen}
+  .head-in .who{color:var(--dust);font-size:.8rem}
+  .head-in button{background:none;border:1px solid var(--line);color:var(--dust);padding:.4rem .9rem;font-family:'Jost';font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+  .head-in button:hover{border-color:var(--copper);color:var(--copper)}
+  main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 5rem}
+  h1{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:600;margin-bottom:.3rem}
+  .sub{color:var(--dust);font-size:.9rem;margin-bottom:2rem}
+  h2{font-family:'Cinzel',serif;font-size:1.02rem;font-weight:600;color:var(--copper);letter-spacing:.04em;margin:0 0 1rem}
+  .card{background:var(--panel);border:1px solid var(--line);padding:1.5rem;margin-bottom:1.2rem}
+  label{display:block;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);font-weight:500;margin-bottom:.3rem}
+  input,select,textarea{width:100%;background:var(--ink);border:1px solid var(--line);color:var(--bone);font-family:'Jost';font-weight:300;font-size:.95rem;padding:.6rem .75rem;border-radius:0}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--copper)}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23e09a35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+  .row{display:flex;gap:.6rem;align-items:end}
+  .btn{display:inline-block;background:transparent;border:1px solid var(--copper);color:var(--copper);font-family:'Jost';font-weight:500;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;padding:.6rem 1.2rem;cursor:pointer;white-space:nowrap}
+  .btn:hover{background:var(--copper);color:var(--ink)}
+  .btn.solid{background:linear-gradient(180deg,var(--copper-hi),var(--ember));color:var(--ink);border:none}
+  .btn.ghost{border-color:var(--line);color:var(--dust)}
+  .btn.ghost:hover{border-color:var(--copper);color:var(--copper);background:none}
+  .btn.sm{padding:.4rem .8rem;font-size:.68rem}
+  .muted{color:var(--dust);font-size:.85rem}
+  .field{margin-bottom:.9rem}
+  /* items table */
+  .items th{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);text-align:left;padding:.3rem .4rem;font-weight:500}
+  .items{width:100%;border-collapse:collapse}
+  .items td{padding:.3rem .4rem;vertical-align:middle}
+  .items input{padding:.45rem .6rem}
+  .items .num{width:90px;text-align:right}
+  .items .qty{width:64px;text-align:center}
+  .items .x{width:34px;text-align:center}
+  .items .x button{background:none;border:none;color:#7a4a3a;font-size:1.1rem;cursor:pointer}
+  .items .x button:hover{color:#d96a4a}
+  .totals{margin-top:1rem;border-top:1px solid var(--line);padding-top:1rem;display:flex;flex-direction:column;gap:.4rem;align-items:flex-end}
+  .totals .tr{display:flex;gap:1.5rem;align-items:center;font-size:.95rem}
+  .totals .tr span:first-child{color:var(--dust);min-width:160px;text-align:right}
+  .totals .grand{font-family:'Cinzel',serif;font-weight:700;font-size:1.4rem;color:var(--copper-hi)}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);padding:.45rem .9rem;font-size:.8rem;cursor:pointer;color:var(--dust);user-select:none}
+  .chip.on{border-color:var(--copper);color:var(--copper-hi);background:rgba(224,154,53,.08)}
+  .tpl{display:flex;gap:.7rem;flex-wrap:wrap}
+  .tpl .chip{display:flex;align-items:center;gap:.5rem}
+  .tpl .sw{width:26px;height:18px;border:1px solid var(--line);display:inline-block}
+  .linkbox{display:none;border:1px solid var(--copper);background:rgba(224,154,53,.07);padding:1rem 1.2rem;margin-top:1rem}
+  .linkbox.show{display:block}
+  .linkbox code{color:var(--copper-hi);font-size:.9rem;word-break:break-all}
+  .linkbox .acts{margin-top:.7rem;display:flex;gap:.6rem;flex-wrap:wrap}
+  /* recent table */
+  .list{width:100%;border-collapse:collapse;font-size:.9rem}
+  .list th{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);text-align:left;padding:.5rem .6rem;font-weight:500;border-bottom:1px solid var(--line)}
+  .list td{padding:.55rem .6rem;border-bottom:1px solid rgba(44,36,20,.5)}
+  .list .paid{color:#8fbf7f}.list .unpaid{color:#d9a44a}
+  .pkgs{display:flex;gap:.45rem;flex-wrap:wrap;margin:.4rem 0 .8rem}
+  /* login */
+  #login{max-width:380px;margin:12vh auto;text-align:center}
+  #login img{width:260px;mix-blend-mode:screen;margin-bottom:1.2rem}
+  #login .card{text-align:left}
+  .err{color:#d96a4a;font-size:.85rem;margin-top:.6rem;display:none}
+  .setupwarn{max-width:640px;margin:10vh auto;background:var(--panel);border:1px solid var(--copper);padding:2rem;line-height:1.7}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="setupwarn" class="setupwarn" style="display:none">
+  <h2 class="cz">One-time setup needed</h2>
+  <p class="muted">This page isn't connected to your Supabase project yet. Open <strong style="color:var(--bone)">invoice-config.js</strong> and paste in your Supabase URL and anon key, then follow <strong style="color:var(--bone)">SETUP-INVOICES.md</strong> to create the tables and your login. Takes about 5 minutes.</p>
+</div>
+
+<div id="login" style="display:none">
+  <img src="assets/logo-text.png" alt="Superstition Detailing">
+  <div class="card">
+    <h2>Team Login</h2>
+    <div class="field"><label>Email</label><input id="lEmail" type="email" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="lPass" type="password" autocomplete="current-password"></div>
+    <button class="btn solid" style="width:100%" onclick="doLogin()">Sign In</button>
+    <p class="err" id="lErr"></p>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+<header><div class="head-in">
+  <a href="index.html"><img src="assets/logo-text.png" alt="Superstition Detailing"></a>
+  <span class="who" id="who"></span>
+  <button onclick="doLogout()">Sign out</button>
+</div></header>
+<main>
+  <h1>Invoice Builder</h1>
+  <p class="sub">Build it, save it, send the link or print it.</p>
+
+  <!-- ===== BILLER & CUSTOMER ===== -->
+  <div class="grid2">
+    <div class="card">
+      <h2>Payee (who gets paid)</h2>
+      <div class="row">
+        <div style="flex:1"><label>Saved payees</label><select id="billerSel" onchange="billerChanged()"></select></div>
+        <button class="btn ghost sm" onclick="toggle('billerNew')">+ New</button>
+      </div>
+      <div id="billerNew" style="display:none;margin-top:1rem;border-top:1px dashed var(--line);padding-top:1rem">
+        <div class="field"><label>Display name (shown on invoice)</label><input id="bName" placeholder="Superstition Detailing"></div>
+        <div class="grid2">
+          <div class="field"><label>Make checks payable to</label><input id="bCheck" placeholder="Full legal name"></div>
+          <div class="field"><label>Zelle (phone or email)</label><input id="bZelle" placeholder="(480) 555-0000"></div>
+        </div>
+        <button class="btn sm" onclick="saveBiller()">Save payee</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Customer</h2>
+      <div class="row">
+        <div style="flex:1"><label>Saved customers</label><select id="custSel"></select></div>
+        <button class="btn ghost sm" onclick="toggle('custNew')">+ New</button>
+      </div>
+      <div id="custNew" style="display:none;margin-top:1rem;border-top:1px dashed var(--line);padding-top:1rem">
+        <div class="grid2">
+          <div class="field"><label>Name</label><input id="cName"></div>
+          <div class="field"><label>Phone</label><input id="cPhone"></div>
+          <div class="field"><label>Email</label><input id="cEmail"></div>
+          <div class="field"><label>Address / city</label><input id="cAddr"></div>
+        </div>
+        <button class="btn sm" onclick="saveCustomer()">Save customer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LINE ITEMS ===== -->
+  <div class="card">
+    <h2>Services</h2>
+    <div class="pkgs">
+      <span class="chip" onclick="addItem('The Maintenance Wash','89')">+ Maintenance Wash $89</span>
+      <span class="chip" onclick="addItem('The Interior Detail','150')">+ Interior Detail $150</span>
+      <span class="chip" onclick="addItem('The Essential Refresh','250')">+ Essential Refresh $250</span>
+      <span class="chip" onclick="addItem('The Showroom Restoration & Sanitize','450')">+ Showroom $450</span>
+      <span class="chip" onclick="addItem('','')">+ Custom line</span>
+    </div>
+    <table class="items"><thead><tr><th>Description</th><th class="qty">Qty</th><th class="num">Price</th><th class="num">Total</th><th class="x"></th></tr></thead>
+    <tbody id="itemRows"></tbody></table>
+
+    <div class="grid3" style="margin-top:1.1rem">
+      <div class="field"><label>Discount ($)</label><input id="discount" type="number" min="0" step="0.01" value="0" oninput="calc()"></div>
+      <div class="field"><label>Water credit</label>
+        <div class="chips"><span class="chip on" id="wcChip" onclick="this.classList.toggle('on');calc()">Water's on us &mdash; $3.00 credit</span></div>
+      </div>
+      <div class="field"><label>Invoice date</label><input id="invDate" type="date"></div>
+    </div>
+
+    <div class="totals">
+      <div class="tr"><span>Subtotal</span><span id="tSub">$0.00</span></div>
+      <div class="tr"><span>Discount</span><span id="tDisc">&ndash;$0.00</span></div>
+      <div class="tr"><span>Water credit</span><span id="tWc">&ndash;$3.00</span></div>
+      <div class="tr"><span>Total due</span><span class="grand" id="tGrand">$0.00</span></div>
+    </div>
+  </div>
+
+  <!-- ===== PAYMENT / TEMPLATE / NOTES ===== -->
+  <div class="grid2">
+    <div class="card">
+      <h2>Payment methods accepted</h2>
+      <div class="chips">
+        <span class="chip on" data-m="cash">Cash</span>
+        <span class="chip on" data-m="check">Check</span>
+        <span class="chip on" data-m="zelle">Zelle</span>
+      </div>
+      <p class="muted" style="margin-top:.8rem">Check payee &amp; Zelle details come from the selected payee above and print on the invoice automatically.</p>
+      <div class="field" style="margin-top:1rem"><label>Status</label>
+        <select id="status"><option value="unpaid">Unpaid</option><option value="paid">Paid</option></select>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Template</h2>
+      <div class="tpl">
+        <span class="chip on" data-t="color"><span class="sw" style="background:linear-gradient(135deg,#0a0805 60%,#e09a35)"></span>Color</span>
+        <span class="chip" data-t="bw"><span class="sw" style="background:#fff;border-color:#000"></span>Black &amp; White</span>
+        <span class="chip" data-t="minimal"><span class="sw" style="background:#fafafa"></span>Minimalist</span>
+      </div>
+      <div class="field" style="margin-top:1rem"><label>Notes (optional, shows on invoice)</label><textarea id="notes" rows="3" placeholder="Thanks for your business!"></textarea></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap">
+    <button class="btn solid" style="padding:.9rem 2rem" onclick="saveInvoice()">Save Invoice &amp; Get Link</button>
+    <button class="btn ghost" onclick="resetForm()">Start fresh</button>
+    <span class="muted" id="saveMsg"></span>
+  </div>
+  <div class="linkbox" id="linkbox">
+    <div><strong>Invoice <span id="lbNum"></span> saved.</strong> Shareable link:</div>
+    <code id="lbUrl"></code>
+    <div class="acts">
+      <button class="btn sm" onclick="copyLink()">Copy link</button>
+      <a class="btn sm" id="lbOpen" target="_blank">Open</a>
+      <a class="btn sm" id="lbPrint" target="_blank">Open &amp; print</a>
+      <a class="btn sm ghost" id="lbSms" target="_blank">Text it to customer</a>
+    </div>
+  </div>
+
+  <!-- ===== RECENT ===== -->
+  <div class="card" style="margin-top:2rem">
+    <h2>Recent invoices</h2>
+    <table class="list"><thead><tr><th>#</th><th>Date</th><th>Customer</th><th>Total</th><th>Status</th><th></th></tr></thead>
+    <tbody id="recentRows"><tr><td colspan="6" class="muted">Loading&hellip;</td></tr></tbody></table>
+  </div>
+</main>
+</div>
+
+<script>
+let sb=null, billers=[], customers=[], editingId=null;
+const $=id=>document.getElementById(id);
+const money=n=>'$'+(Math.round(n*100)/100).toFixed(2);
+
+function toggle(id){const e=$(id);e.style.display=e.style.display==='none'?'block':'none'}
+
+init();
+async function init(){
+  const c=window.SD_CONFIG||{};
+  if(!c.SUPABASE_URL||c.SUPABASE_URL.includes('PASTE')){ $('setupwarn').style.display='block'; return; }
+  sb=window.supabase.createClient(c.SUPABASE_URL,c.SUPABASE_ANON_KEY);
+  const {data:{session}}=await sb.auth.getSession();
+  session?enter(session):$('login').style.display='block';
+}
+async function doLogin(){
+  const {data,error}=await sb.auth.signInWithPassword({email:$('lEmail').value.trim(),password:$('lPass').value});
+  if(error){$('lErr').textContent=error.message;$('lErr').style.display='block';return}
+  $('login').style.display='none'; enter(data.session);
+}
+async function doLogout(){await sb.auth.signOut();location.reload()}
+async function enter(session){
+  $('app').style.display='block';
+  $('who').textContent=session.user.email;
+  $('invDate').value=new Date().toISOString().slice(0,10);
+  addItem('','');
+  document.querySelectorAll('.chip[data-m],.chip[data-t]').forEach(ch=>ch.addEventListener('click',()=>{
+    if(ch.dataset.t){document.querySelectorAll('.chip[data-t]').forEach(x=>x.classList.remove('on'));ch.classList.add('on')}
+    else ch.classList.toggle('on');
+  }));
+  await Promise.all([loadBillers(),loadCustomers(),loadRecent()]);
+}
+
+/* ---------- billers ---------- */
+async function loadBillers(){
+  const {data}=await sb.from('billers').select('*').order('created_at');
+  billers=data||[];
+  $('billerSel').innerHTML=billers.length?billers.map((b,i)=>`<option value="${i}">${esc(b.display_name)} \u2014 Zelle: ${esc(b.zelle||'\u2014')}</option>`).join(''):'<option value="">No payees yet \u2014 add one</option>';
+}
+async function saveBiller(){
+  if(!$('bName').value.trim())return alert('Display name required');
+  await sb.from('billers').insert({display_name:$('bName').value.trim(),check_payee:$('bCheck').value.trim(),zelle:$('bZelle').value.trim()});
+  $('bName').value=$('bCheck').value=$('bZelle').value='';toggle('billerNew');await loadBillers();
+  $('billerSel').selectedIndex=billers.length-1;
+}
+function billerChanged(){}
+
+/* ---------- customers ---------- */
+async function loadCustomers(){
+  const {data}=await sb.from('customers').select('*').order('name');
+  customers=data||[];
+  $('custSel').innerHTML='<option value="">\u2014 choose customer \u2014</option>'+customers.map((c,i)=>`<option value="${i}">${esc(c.name)}${c.phone?' \u00b7 '+esc(c.phone):''}</option>`).join('');
+}
+async function saveCustomer(){
+  if(!$('cName').value.trim())return alert('Name required');
+  await sb.from('customers').insert({name:$('cName').value.trim(),phone:$('cPhone').value.trim(),email:$('cEmail').value.trim(),address:$('cAddr').value.trim()});
+  ['cName','cPhone','cEmail','cAddr'].forEach(i=>$(i).value='');toggle('custNew');await loadCustomers();
+  $('custSel').selectedIndex=customers.length; // newly sorted; close enough for small lists
+}
+
+/* ---------- items ---------- */
+function addItem(desc,price){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input class="i-d" value="${esc(desc)}" placeholder="Service description"></td>
+  <td class="qty"><input class="i-q" type="number" min="1" value="1" oninput="calc()"></td>
+  <td class="num"><input class="i-p" type="number" min="0" step="0.01" value="${esc(price)}" oninput="calc()"></td>
+  <td class="num i-t">$0.00</td>
+  <td class="x"><button onclick="this.closest('tr').remove();calc()" title="Remove">&times;</button></td>`;
+  $('itemRows').appendChild(tr);calc();
+}
+function rows(){return[...document.querySelectorAll('#itemRows tr')].map(tr=>({
+  desc:tr.querySelector('.i-d').value.trim(),
+  qty:parseFloat(tr.querySelector('.i-q').value)||1,
+  price:parseFloat(tr.querySelector('.i-p').value)||0, tr}))}
+function calc(){
+  let sub=0;
+  rows().forEach(r=>{const t=r.qty*r.price;sub+=t;r.tr.querySelector('.i-t').textContent=money(t)});
+  const disc=parseFloat($('discount').value)||0;
+  const wc=$('wcChip').classList.contains('on')?3:0;
+  $('tSub').textContent=money(sub);
+  $('tDisc').innerHTML='&ndash;'+money(disc);
+  $('tWc').innerHTML='&ndash;'+money(wc);
+  $('tGrand').textContent=money(Math.max(0,sub-disc-wc));
+}
+
+/* ---------- save / load ---------- */
+async function saveInvoice(){
+  const items=rows().filter(r=>r.desc).map(({desc,qty,price})=>({desc,qty,price}));
+  if(!items.length)return alert('Add at least one service line');
+  const b=billers[$('billerSel').value]; if(!b)return alert('Add/select a payee first');
+  const ci=$('custSel').value; const cust=ci!==''?customers[ci]:null;
+  if(!cust)return alert('Choose or add a customer');
+  const methods=[...document.querySelectorAll('.chip[data-m].on')].map(c=>c.dataset.m);
+  const tpl=document.querySelector('.chip[data-t].on').dataset.t;
+  const id=editingId||String(Math.floor(100000+Math.random()*900000));
+  const inv={id,issued_date:$('invDate').value,
+    biller:{display_name:b.display_name,check_payee:b.check_payee,zelle:b.zelle},
+    customer:{name:cust.name,phone:cust.phone,email:cust.email,address:cust.address},
+    items,discount:parseFloat($('discount').value)||0,
+    water_credit:$('wcChip').classList.contains('on')?3:0,
+    payment_methods:methods,template:tpl,notes:$('notes').value.trim(),status:$('status').value};
+  const {error}=await sb.from('invoices').upsert(inv);
+  if(error)return alert('Save failed: '+error.message);
+  const url=location.origin+'/invoice.html?id='+id;
+  $('lbNum').textContent='#'+id; $('lbUrl').textContent=url;
+  $('lbOpen').href=url; $('lbPrint').href=url+'&print=1';
+  $('lbSms').href='sms:'+(cust.phone||'')+'?&body='+encodeURIComponent('Your Superstition Detailing invoice: '+url);
+  $('linkbox').classList.add('show');
+  $('saveMsg').textContent=editingId?'Updated.':'Saved.';
+  editingId=id; loadRecent();
+}
+function copyLink(){navigator.clipboard.writeText($('lbUrl').textContent).then(()=>{$('saveMsg').textContent='Link copied!'})}
+function resetForm(){location.reload()}
+
+async function loadRecent(){
+  const {data}=await sb.from('invoices').select('id,issued_date,customer,items,discount,water_credit,status').order('created_at',{ascending:false}).limit(25);
+  const rs=(data||[]).map(v=>{
+    const sub=(v.items||[]).reduce((s,i)=>s+i.qty*i.price,0);
+    const tot=Math.max(0,sub-(v.discount||0)-(v.water_credit||0));
+    return `<tr><td>#${v.id}</td><td>${v.issued_date||''}</td><td>${esc(v.customer?.name||'')}</td><td>${money(tot)}</td>
+    <td class="${v.status}">${v.status}</td>
+    <td style="white-space:nowrap"><a class="btn sm ghost" href="invoice.html?id=${v.id}" target="_blank">View</a>
+    <button class="btn sm ghost" onclick="togglePaid('${v.id}','${v.status}')">${v.status==='paid'?'Mark unpaid':'Mark paid'}</button></td></tr>`});
+  $('recentRows').innerHTML=rs.length?rs.join(''):'<tr><td colspan="6" class="muted">No invoices yet.</td></tr>';
+}
+async function togglePaid(id,cur){await sb.from('invoices').update({status:cur==='paid'?'unpaid':'paid'}).eq('id',id);loadRecent()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+</script>
+</body>
+</html>

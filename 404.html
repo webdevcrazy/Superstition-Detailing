@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Superstition Detailing</title>
+<script>
+  // pretty invoice links: /invoice/192012 -> /invoice.html?id=192012
+  // pretty builder link:  /buildinvoice   -> /buildinvoice.html
+  var p = location.pathname;
+  var m = p.match(/^\/invoice\/(\w+)\/?$/);
+  if (m) { location.replace('/invoice.html?id=' + m[1]); }
+  else if (/^\/buildinvoice\/?$/.test(p)) { location.replace('/buildinvoice.html'); }
+</script>
+<style>body{background:#0a0805;color:#efe3cc;font-family:sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center}a{color:#e09a35}</style>
+</head>
+<body><div><h1>Page not found</h1><p><a href="/">Back to superstitiondetailing.com</a></p></div></body>
+</html>
