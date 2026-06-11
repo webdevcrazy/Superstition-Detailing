@@ -62,30 +62,50 @@
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "Detailing Services",
+    "name": "Detailing Packages",
     "itemListElement": [
       {
         "@type": "Offer",
+        "price": "89",
+        "priceCurrency": "USD",
+        "description": "Starting price; final quote confirmed in person.",
         "itemOffered": {
           "@type": "Service",
-          "name": "Trunk-to-Front Detailing",
-          "description": "Complete interior and exterior detail: cargo areas, floorboards, vents, upholstery, and exterior paint."
+          "name": "The Maintenance Wash",
+          "description": "Exterior hand wash and dry, wheels and tires, full interior vacuum, wipe-down, and streak-free glass."
         }
       },
       {
         "@type": "Offer",
+        "price": "150",
+        "priceCurrency": "USD",
+        "description": "Starting price; final quote confirmed in person.",
         "itemOffered": {
           "@type": "Service",
-          "name": "Mobile Detailing",
-          "description": "Full detailing setup brought to your home or office in Mesa and nearby East Valley cities, on your schedule."
+          "name": "The Full Detail",
+          "description": "Complete inside-and-out detail including door jambs, console deep clean, shampooed mats, and a spray wax finish."
         }
       },
       {
         "@type": "Offer",
+        "price": "250",
+        "priceCurrency": "USD",
+        "description": "Starting price; final quote confirmed in person.",
         "itemOffered": {
           "@type": "Service",
-          "name": "Eco-Friendly Detailing",
-          "description": "Water-efficient detailing methods that are safe for your driveway and the Arizona desert."
+          "name": "The Essential Refresh",
+          "description": "Deep exterior wash, deep-extract vacuum, UV-shield protectant on dash and door panels, streak-free glass, and a fresh-scent finish."
+        }
+      },
+      {
+        "@type": "Offer",
+        "price": "450",
+        "priceCurrency": "USD",
+        "description": "Starting price; final quote confirmed in person.",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "The Showroom Restoration & Sanitize",
+          "description": "Everything in Essential Refresh plus carpet and seat extraction, steam sanitization of vents and high-touch surfaces, leather conditioning, odor neutralization, anti-static barrier, and a 6-month wax sealant."
         }
       }
     ]
@@ -111,6 +131,11 @@
       "@type": "Question",
       "name": "Is the detailing process safe for my driveway?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. We offer eco-friendly, water-efficient detailing methods designed to deliver superior results while staying safe for your driveway and easy on the Arizona desert." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you use my water?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We hook up to a water source at your location, but the water is on us: every invoice includes a water credit that more than covers the typical cost, and our methods are water-efficient." }
     },
     {
       "@type": "Question",
@@ -210,6 +235,8 @@
   .nav-links a.plain:hover{color:var(--copper)}
   .btn{
     display:inline-block;
+    background:transparent;
+    cursor:pointer;
     font-family:'Jost',sans-serif;font-weight:500;
     font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;
     padding:.72rem 1.6rem;
@@ -259,7 +286,7 @@
   .hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:rise 1s .45s ease-out both}
 
   /* the ridge: Superstition silhouette closing the hero */
-  .ridge{display:block;width:100%;margin-top:3.5rem}
+  .ridge{display:block;margin:3.5rem -1.5rem 0;width:calc(100% + 3rem)}
   .ridge svg{display:block;width:100%;height:auto}
 
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -301,6 +328,45 @@
     transform:scaleX(0);transform-origin:left;transition:transform .35s ease;
   }
   .svc:hover::after{transform:scaleX(1)}
+
+  /* pricing */
+  .pricing{background:var(--ink-2)}
+  .pricing .head{text-align:center;margin-bottom:3rem}
+  .pricing h2{font-size:clamp(1.7rem,3.6vw,2.4rem);margin-top:1.1rem}
+  .pricing .head p{color:var(--dust);margin-top:.7rem}
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;align-items:stretch}
+  .plan{
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:2rem 1.5rem 1.7rem;
+    position:relative;
+    display:flex;flex-direction:column;
+    transition:border-color .25s,transform .25s;
+  }
+  .plan:hover{border-color:var(--copper);transform:translateY(-4px)}
+  .plan.featured{border-color:var(--copper);background:#1c1509}
+  .plan .badge{
+    position:absolute;top:-.7rem;left:50%;transform:translateX(-50%);
+    background:linear-gradient(180deg,var(--copper-hi),var(--ember));
+    color:var(--ink);font-size:.62rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    padding:.3rem .8rem;white-space:nowrap;
+  }
+  .plan h3{font-family:'Cinzel',serif;font-weight:600;font-size:1.02rem;color:var(--bone);letter-spacing:.02em;min-height:2.6em}
+  .plan .price{font-family:'Cinzel',serif;font-weight:700;font-size:2.1rem;color:var(--copper);margin:.6rem 0 .2rem}
+  .plan .price span{font-size:.85rem;color:var(--dust);font-family:'Jost',sans-serif;font-weight:400}
+  .plan .tag{color:var(--dust);font-size:.85rem;margin-bottom:1rem}
+  .plan ul{list-style:none;margin:0 0 1.4rem;flex:1}
+  .plan li{
+    color:var(--bone);font-size:.88rem;line-height:1.45;
+    padding:.42rem 0 .42rem 1.1rem;position:relative;
+    border-bottom:1px solid rgba(44,36,20,.6);
+  }
+  .plan li:last-child{border-bottom:none}
+  .plan li::before{content:"\2605";position:absolute;left:0;top:.46rem;color:var(--copper);font-size:.6rem}
+  .plan .btn{width:100%;text-align:center;cursor:pointer;font-size:.78rem;padding:.7rem 0}
+  .price-note{text-align:center;color:#6e5f45;font-size:.8rem;margin-top:1.6rem;line-height:1.6}
+  @media (max-width:1020px){.price-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.price-grid{grid-template-columns:1fr}.plan h3{min-height:0}}
 
   /* reviews */
   .reviews{background:var(--ink-2);text-align:center}
@@ -461,6 +527,7 @@
     </a>
     <div class="nav-links">
       <a class="plain" href="#services">Services</a>
+      <a class="plain" href="#pricing">Pricing</a>
       <a class="plain" href="#reviews">Reviews</a>
       <a class="plain" href="#quote">Free Quote</a>
       <a class="plain" href="#contact">Service Area</a>
@@ -480,6 +547,7 @@
     <span class="stars" aria-label="Rated 5 out of 5 stars">★★★★★</span>
     <a href="https://share.google/diZb8kxHhOQJ2dDNe" target="_blank" rel="noopener">3 Google reviews</a>
   </div>
+  <div style="margin:-1.2rem auto 1.8rem;font-size:.85rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);font-weight:500;animation:rise 1s .4s ease-out both">Prices starting at $89</div>
   <div class="hero-cta">
     <a class="btn solid" href="#quote">Get a Free Quote</a>
     <a class="btn" href="tel:+14805694666">Call (480) 569-4666</a>
@@ -529,9 +597,80 @@
       <article class="svc">
         <span class="star" aria-hidden="true">★</span>
         <h3>Eco-Friendly Options</h3>
-        <p>Superior results using water-efficient methods that are safe for your driveway — and easier on the desert we live in.</p>
+        <p>Superior results using water-efficient methods that are safe for your driveway — and the water's on us: every invoice includes a water credit.</p>
       </article>
     </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="head">
+      <div class="bands center" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h2 class="display">Packages &amp; pricing</h2>
+      <p>Every package is performed at your home or office. Prices start at &mdash; final quote confirmed after we see the vehicle.</p>
+    </div>
+    <div class="price-grid">
+
+      <article class="plan">
+        <h3>The Maintenance Wash</h3>
+        <div class="price">$89<span> +</span></div>
+        <p class="tag">Keep it clean between details.</p>
+        <ul>
+          <li>Exterior hand wash &amp; dry</li>
+          <li>Wheels cleaned, tires dressed</li>
+          <li>Full interior vacuum</li>
+          <li>Surface wipe-down</li>
+          <li>Streak-free glass</li>
+        </ul>
+        <button class="btn plan-btn" type="button" data-service="The Maintenance Wash ($89+)">Get a Quote</button>
+      </article>
+
+      <article class="plan">
+        <h3>The Full Detail</h3>
+        <div class="price">$150<span> +</span></div>
+        <p class="tag">The complete inside-and-out clean.</p>
+        <ul>
+          <li>Everything in Maintenance Wash</li>
+          <li>Door jambs &amp; trim detailed</li>
+          <li>Console &amp; cupholders deep cleaned</li>
+          <li>Floor mats shampooed</li>
+        </ul>
+        <button class="btn plan-btn" type="button" data-service="The Full Detail ($150+)">Get a Quote</button>
+      </article>
+
+      <article class="plan">
+        <h3>The Essential Refresh</h3>
+        <div class="price">$250<span> +</span></div>
+        <p class="tag">A professional reset for well-maintained vehicles.</p>
+        <ul>
+          <li>Deep exterior wash</li>
+          <li>Deep-extract vacuum of every crevice</li>
+          <li>UV-shield protectant on dash &amp; door panels</li>
+          <li>Streak-free glass</li>
+          <li>Fresh-scent finish</li>
+        </ul>
+        <button class="btn plan-btn" type="button" data-service="The Essential Refresh ($250+)">Get a Quote</button>
+      </article>
+
+      <article class="plan featured">
+        <span class="badge">Most Popular</span>
+        <h3>The Showroom Restoration &amp; Sanitize</h3>
+        <div class="price">$450<span> +</span></div>
+        <p class="tag">The full &ldquo;like-new&rdquo; transformation.</p>
+        <ul>
+          <li>Everything in Essential Refresh</li>
+          <li>Carpet &amp; seat extraction lifts deep stains</li>
+          <li>Steam sanitization of vents &amp; surfaces &mdash; kills 99% of bacteria</li>
+          <li>Leather conditioning (if applicable)</li>
+          <li>Odor neutralization &amp; anti-static barrier</li>
+          <li>6-month wax sealant</li>
+        </ul>
+        <button class="btn solid plan-btn" type="button" data-service="The Showroom Restoration ($450+)">Get a Quote</button>
+      </article>
+
+    </div>
+    <p class="price-note">Starting prices are for standard sedans; trucks, SUVs, and heavily soiled vehicles may be quoted higher.<br>Per our <a href="terms.html" style="color:var(--dust)">Terms of Service</a>, all prices are estimates until confirmed in person.</p>
   </div>
 </section>
 
@@ -588,9 +727,10 @@
           <label for="qService">Service</label>
           <select id="qService" name="service" required>
             <option value="" selected disabled>Select…</option>
-            <option>Full Detail (Trunk-to-Front)</option>
-            <option>Interior Only</option>
-            <option>Exterior Only</option>
+            <option>The Maintenance Wash ($89+)</option>
+            <option>The Full Detail ($150+)</option>
+            <option>The Essential Refresh ($250+)</option>
+            <option>The Showroom Restoration ($450+)</option>
             <option>Not sure — recommend something</option>
           </select>
         </div>
@@ -647,6 +787,10 @@
     <details>
       <summary>Is the detailing process safe for my driveway?</summary>
       <p>Yes. We offer eco-friendly, water-efficient methods designed to deliver superior results while staying safe for your driveway and easy on the Arizona desert.</p>
+    </details>
+    <details>
+      <summary>Do you use my water?</summary>
+      <p>We hook up to a spigot at your location, but the water's on us — every invoice includes a water credit that more than covers the typical cost of a detail. Combined with our water-efficient methods, your water bill won't notice we were there.</p>
     </details>
     <details>
       <summary>How do I book an appointment?</summary>
@@ -747,6 +891,16 @@
       history.replaceState(null, '', location.pathname + '#quote');
     }
     if (location.hash === '#quote') openQuote(false);
+
+    // pricing cards: open the quote form with the package preselected
+    document.querySelectorAll('.plan-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        openQuote(true);
+        var sel = document.getElementById('qService');
+        sel.value = b.getAttribute('data-service');
+        if (typeof gtag === 'function') gtag('event', 'select_package', { event_category: 'pricing', package: b.getAttribute('data-service') });
+      });
+    });
 
     // track call and text taps
     document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
